@@ -1,13 +1,13 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import React from "react";
 
 const COLORS = {
-  primary: '#16A34A',
-  accent: '#0EA5E9',
-  neutral: '#64748B',
-  white: '#FFFFFF',
-  background: '#F8FAFC',
+  primary: "#16A34A",
+  accent: "#0EA5E9",
+  neutral: "#64748B",
+  white: "#FFFFFF",
+  background: "#F8FAFC",
 };
 
 export default function TabLayout() {
@@ -18,7 +18,7 @@ export default function TabLayout() {
         tabBarInactiveTintColor: COLORS.neutral,
         tabBarStyle: {
           backgroundColor: COLORS.white,
-          borderTopColor: '#E2E8F0',
+          borderTopColor: "#E2E8F0",
           borderTopWidth: 1,
           height: 80,
           paddingBottom: 25,
@@ -27,20 +27,20 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 12,
-          fontWeight: '600',
+          fontWeight: "600",
           marginTop: 4,
         },
         tabBarIconStyle: {
           marginBottom: 0,
         },
         headerShown: false,
-        tabBarHideOnKeyboard: true,
+        tabBarHideOnKeyboard: false,
       }}
     >
       <Tabs.Screen
         name="screening"
         options={{
-          title: 'Skrining',
+          title: "Skrining",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="medical-outline" size={24} color={color} />
           ),
@@ -49,7 +49,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="history"
         options={{
-          title: 'Riwayat',
+          title: "Riwayat",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="time-outline" size={24} color={color} />
           ),
@@ -58,7 +58,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profil',
+          title: "Profil",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={24} color={color} />
           ),

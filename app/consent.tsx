@@ -37,7 +37,7 @@ export default function ConsentScreen() {
       );
       return;
     }
-    router.replace("/(tabs)/screening");
+    router.replace("/(tabs)/screening/results");
   };
 
   const toggleTerms = () => setTermsAccepted(!termsAccepted);

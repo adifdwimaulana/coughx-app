@@ -48,7 +48,7 @@ export default function RecordingScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    initSession();
+    // initSession();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       // stopRecording();

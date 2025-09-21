@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -105,10 +105,10 @@ export default function ScreeningIntro() {
   const permissionsGranted = hasAudioPermission && hasMediaPermission;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <ScrollView style={styles.container}>
+      {/* <View style={styles.header}>
         <Text style={styles.headerTitle}>Skrining TB</Text>
-      </View>
+      </View> */}
 
       <View style={styles.content}>
         <View style={styles.iconContainer}>
@@ -224,7 +224,7 @@ export default function ScreeningIntro() {
           </Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 

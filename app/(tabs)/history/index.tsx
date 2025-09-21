@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { format } from "date-fns";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
   Alert,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+  FlatList,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const COLORS = {
-  primary: '#16A34A',
-  accent: '#0EA5E9',
-  danger: '#DC2626',
-  neutral: '#64748B',
-  white: '#FFFFFF',
-  background: '#F8FAFC',
-  text: '#1E293B',
-  textLight: '#64748B',
-  border: '#E2E8F0',
-  success: '#10B981',
+  primary: "#16A34A",
+  accent: "#0EA5E9",
+  danger: "#DC2626",
+  neutral: "#64748B",
+  white: "#FFFFFF",
+  background: "#F8FAFC",
+  text: "#1E293B",
+  textLight: "#64748B",
+  border: "#E2E8F0",
+  success: "#10B981",
 };
 
 interface ScreeningHistory {
@@ -41,23 +41,25 @@ export default function HistoryScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    loadHistory();
-  }, []);
+  // useEffect(() => {
+  //   loadHistory();
+  // }, []);
 
   const loadHistory = async () => {
     try {
-      const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_URL}/api/screening/history`);
-      
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/api/screening/history`
+      );
+
       if (response.ok) {
         const historyData = await response.json();
         setHistory(historyData);
       } else {
-        throw new Error('Failed to load history');
+        throw new Error("Failed to load history");
       }
     } catch (error) {
-      console.error('Error loading history:', error);
-      Alert.alert('Error', 'Gagal memuat riwayat skrining.');
+      console.error("Error loading history:", error);
+      Alert.alert("Error", "Gagal memuat riwayat skrining.");
     } finally {
       setIsLoading(false);
       setRefreshing(false);
@@ -66,7 +68,7 @@ export default function HistoryScreen() {
 
   const onRefresh = () => {
     setRefreshing(true);
-    loadHistory();
+    // loadHistory();
   };
 
   const handleItemPress = (sessionId: string) => {
@@ -74,16 +76,16 @@ export default function HistoryScreen() {
   };
 
   const getClassificationColor = (classification: string) => {
-    return classification.includes('Positif') ? COLORS.danger : COLORS.success;
+    return classification.includes("Positif") ? COLORS.danger : COLORS.success;
   };
 
   const getConfidenceColor = (confidence: string) => {
     switch (confidence.toLowerCase()) {
-      case 'tinggi':
+      case "tinggi":
         return COLORS.success;
-      case 'sedang':
+      case "sedang":
         return COLORS.accent;
-      case 'rendah':
+      case "rendah":
         return COLORS.neutral;
       default:
         return COLORS.neutral;
@@ -97,19 +99,23 @@ export default function HistoryScreen() {
     >
       <View style={styles.itemHeader}>
         <View style={styles.itemDate}>
-          <Ionicons name="calendar-outline" size={16} color={COLORS.textLight} />
+          <Ionicons
+            name="calendar-outline"
+            size={16}
+            color={COLORS.textLight}
+          />
           <Text style={styles.dateText}>
-            {format(new Date(item.created_at), 'dd MMM yyyy, HH:mm')}
+            {format(new Date(item.created_at), "dd MMM yyyy, HH:mm")}
           </Text>
         </View>
-        
-        <View style={[
-          styles.classificationBadge,
-          { backgroundColor: getClassificationColor(item.classification) }
-        ]}>
-          <Text style={styles.classificationText}>
-            {item.classification}
-          </Text>
+
+        <View
+          style={[
+            styles.classificationBadge,
+            { backgroundColor: getClassificationColor(item.classification) },
+          ]}
+        >
+          <Text style={styles.classificationText}>{item.classification}</Text>
         </View>
       </View>
 
@@ -123,14 +129,18 @@ export default function HistoryScreen() {
 
         <View style={styles.confidenceContainer}>
           <Text style={styles.confidenceLabel}>Kepercayaan:</Text>
-          <View style={[
-            styles.confidenceBadge,
-            { backgroundColor: getConfidenceColor(item.confidence) + '20' }
-          ]}>
-            <Text style={[
-              styles.confidenceText,
-              { color: getConfidenceColor(item.confidence) }
-            ]}>
+          <View
+            style={[
+              styles.confidenceBadge,
+              { backgroundColor: getConfidenceColor(item.confidence) + "20" },
+            ]}
+          >
+            <Text
+              style={[
+                styles.confidenceText,
+                { color: getConfidenceColor(item.confidence) },
+              ]}
+            >
               {item.confidence}
             </Text>
           </View>
@@ -151,7 +161,7 @@ export default function HistoryScreen() {
         Riwayat skrining TB Anda akan muncul di sini setelah melakukan skrining.
       </Text>
       <TouchableOpacity
-        onPress={() => router.push('/(tabs)/screening')}
+        onPress={() => router.push("/(tabs)/screening")}
         style={styles.startScreeningButton}
       >
         <Text style={styles.startScreeningText}>Mulai Skrining</Text>
@@ -161,12 +171,12 @@ export default function HistoryScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={styles.headerTitle}>Riwayat Skrining</Text>
         <TouchableOpacity onPress={onRefresh} style={styles.refreshButton}>
           <Ionicons name="refresh-outline" size={24} color={COLORS.primary} />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <View style={styles.content}>
         {history.length > 0 && (
@@ -176,10 +186,10 @@ export default function HistoryScreen() {
               Total {history.length} skrining dilakukan
             </Text>
             <Text style={styles.summarySubtext}>
-              Terakhir: {history.length > 0 
-                ? format(new Date(history[0].created_at), 'dd MMM yyyy')
-                : 'Belum ada'
-              }
+              Terakhir:{" "}
+              {history.length > 0
+                ? format(new Date(history[0].created_at), "dd MMM yyyy")
+                : "Belum ada"}
             </Text>
           </View>
         )}
@@ -213,9 +223,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 24,
     paddingVertical: 20,
     borderBottomWidth: 1,
@@ -223,7 +233,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.text,
   },
   refreshButton: {
@@ -245,7 +255,7 @@ const styles = StyleSheet.create({
   },
   summaryTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.text,
     marginBottom: 8,
   },
@@ -276,14 +286,14 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   itemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     marginBottom: 12,
   },
   itemDate: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     flex: 1,
   },
   dateText: {
@@ -299,15 +309,15 @@ const styles = StyleSheet.create({
   classificationText: {
     color: COLORS.white,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   itemContent: {
     marginBottom: 12,
   },
   probabilityContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 8,
   },
   probabilityLabel: {
@@ -316,13 +326,13 @@ const styles = StyleSheet.create({
   },
   probabilityValue: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.text,
   },
   confidenceContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   confidenceLabel: {
     fontSize: 16,
@@ -335,20 +345,20 @@ const styles = StyleSheet.create({
   },
   confidenceText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   itemFooter: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   emptyContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 32,
   },
   emptyTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.text,
     marginTop: 24,
     marginBottom: 12,
@@ -356,7 +366,7 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 16,
     color: COLORS.textLight,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 24,
     marginBottom: 32,
   },
@@ -369,6 +379,6 @@ const styles = StyleSheet.create({
   startScreeningText: {
     color: COLORS.white,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

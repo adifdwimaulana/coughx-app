@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
   Alert,
   Dimensions,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Svg, { Circle } from 'react-native-svg';
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Svg, { Circle } from "react-native-svg";
 
 const COLORS = {
-  primary: '#16A34A',
-  accent: '#0EA5E9',
-  danger: '#DC2626',
-  neutral: '#64748B',
-  white: '#FFFFFF',
-  background: '#F8FAFC',
-  text: '#1E293B',
-  textLight: '#64748B',
-  border: '#E2E8F0',
-  success: '#10B981',
-  warning: '#F59E0B',
+  primary: "#16A34A",
+  accent: "#0EA5E9",
+  danger: "#DC2626",
+  neutral: "#64748B",
+  white: "#FFFFFF",
+  background: "#F8FAFC",
+  text: "#1E293B",
+  textLight: "#64748B",
+  border: "#E2E8F0",
+  success: "#10B981",
+  warning: "#F59E0B",
 };
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const chartSize = width - 100;
 const chartRadius = chartSize / 2 - 20;
 const strokeWidth = 20;
@@ -43,18 +43,18 @@ interface TBAnalysisResult {
 export default function ResultsScreen() {
   const [results, setResults] = useState<TBAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [sessionId, setSessionId] = useState<string>('');
+  const [sessionId, setSessionId] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
-    loadResults();
+    // loadResults();
   }, []);
 
   const loadResults = async () => {
     try {
-      const currentSessionId = await AsyncStorage.getItem('currentSessionId');
+      const currentSessionId = await AsyncStorage.getItem("currentSessionId");
       if (!currentSessionId) {
-        Alert.alert('Error', 'Session tidak ditemukan.');
+        Alert.alert("Error", "Session tidak ditemukan.");
         router.back();
         return;
       }
@@ -69,11 +69,11 @@ export default function ResultsScreen() {
         const analysisResult = await response.json();
         setResults(analysisResult);
       } else {
-        throw new Error('Failed to load results');
+        throw new Error("Failed to load results");
       }
     } catch (error) {
-      console.error('Error loading results:', error);
-      Alert.alert('Error', 'Gagal memuat hasil analisis. Silakan coba lagi.');
+      console.error("Error loading results:", error);
+      Alert.alert("Error", "Gagal memuat hasil analisis. Silakan coba lagi.");
     } finally {
       setIsLoading(false);
     }
@@ -82,21 +82,21 @@ export default function ResultsScreen() {
   const saveToHistory = async () => {
     try {
       Alert.alert(
-        'Simpan ke Riwayat',
-        'Hasil skrining akan disimpan dalam riwayat Anda.',
+        "Simpan ke Riwayat",
+        "Hasil skrining akan disimpan dalam riwayat Anda.",
         [
-          { text: 'Batal', style: 'cancel' },
+          { text: "Batal", style: "cancel" },
           {
-            text: 'Simpan',
+            text: "Simpan",
             onPress: () => {
               // Results are already saved in backend
               Alert.alert(
-                'Tersimpan',
-                'Hasil skrining telah disimpan ke riwayat.',
+                "Tersimpan",
+                "Hasil skrining telah disimpan ke riwayat.",
                 [
                   {
-                    text: 'OK',
-                    onPress: () => router.push('/(tabs)/history'),
+                    text: "OK",
+                    onPress: () => router.push("/(tabs)/history"),
                   },
                 ]
               );
@@ -105,30 +105,26 @@ export default function ResultsScreen() {
         ]
       );
     } catch (error) {
-      console.error('Error saving to history:', error);
-      Alert.alert('Error', 'Gagal menyimpan ke riwayat.');
+      console.error("Error saving to history:", error);
+      Alert.alert("Error", "Gagal menyimpan ke riwayat.");
     }
   };
 
   const viewReferral = () => {
-    router.push('/(tabs)/screening/referral');
+    router.push("/(tabs)/screening/referral");
   };
 
   const startNewScreening = () => {
-    Alert.alert(
-      'Skrining Baru',
-      'Apakah Anda ingin memulai skrining baru?',
-      [
-        { text: 'Batal', style: 'cancel' },
-        {
-          text: 'Ya',
-          onPress: () => {
-            AsyncStorage.removeItem('currentSessionId');
-            router.push('/(tabs)/screening');
-          },
+    Alert.alert("Skrining Baru", "Apakah Anda ingin memulai skrining baru?", [
+      { text: "Batal", style: "cancel" },
+      {
+        text: "Ya",
+        onPress: () => {
+          AsyncStorage.removeItem("currentSessionId");
+          router.push("/(tabs)/screening");
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const renderDonutChart = () => {
@@ -137,9 +133,9 @@ export default function ResultsScreen() {
     const probability = results.tb_probability;
     const circumference = 2 * Math.PI * chartRadius;
     const strokeDasharray = circumference;
-    const strokeDashoffset = circumference - (probability * circumference);
+    const strokeDashoffset = circumference - probability * circumference;
 
-    const isPositive = results.classification.includes('Positif');
+    const isPositive = results.classification.includes("Positif");
     const chartColor = isPositive ? COLORS.danger : COLORS.success;
 
     return (
@@ -168,14 +164,12 @@ export default function ResultsScreen() {
             transform={`rotate(-90 ${chartSize / 2} ${chartSize / 2})`}
           />
         </Svg>
-        
+
         <View style={styles.chartCenter}>
           <Text style={styles.probabilityText}>
             {Math.round(probability * 100)}%
           </Text>
-          <Text style={styles.probabilityLabel}>
-            Kemungkinan TB
-          </Text>
+          <Text style={styles.probabilityLabel}>Kemungkinan TB</Text>
         </View>
       </View>
     );
@@ -196,9 +190,13 @@ export default function ResultsScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle-outline" size={60} color={COLORS.danger} />
+          <Ionicons
+            name="alert-circle-outline"
+            size={60}
+            color={COLORS.danger}
+          />
           <Text style={styles.errorText}>Gagal memuat hasil analisis</Text>
-          <TouchableOpacity onPress={loadResults} style={styles.retryButton}>
+          <TouchableOpacity style={styles.retryButton}>
             <Text style={styles.retryButtonText}>Coba Lagi</Text>
           </TouchableOpacity>
         </View>
@@ -206,7 +204,7 @@ export default function ResultsScreen() {
     );
   }
 
-  const isPositive = results.classification.includes('Positif');
+  const isPositive = results.classification.includes("Positif");
 
   return (
     <SafeAreaView style={styles.container}>
@@ -216,17 +214,21 @@ export default function ResultsScreen() {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {renderDonutChart()}
-        
+
         <View style={styles.resultCard}>
           <View style={styles.classificationContainer}>
-            <View style={[
-              styles.classificationBadge,
-              { backgroundColor: isPositive ? COLORS.danger : COLORS.success }
-            ]}>
-              <Ionicons 
-                name={isPositive ? "alert-circle" : "checkmark-circle"} 
-                size={24} 
-                color={COLORS.white} 
+            <View
+              style={[
+                styles.classificationBadge,
+                {
+                  backgroundColor: isPositive ? COLORS.danger : COLORS.success,
+                },
+              ]}
+            >
+              <Ionicons
+                name={isPositive ? "alert-circle" : "checkmark-circle"}
+                size={24}
+                color={COLORS.white}
               />
               <Text style={styles.classificationText}>
                 {results.classification}
@@ -253,7 +255,8 @@ export default function ResultsScreen() {
             <View style={styles.warningContent}>
               <Text style={styles.warningTitle}>Penting!</Text>
               <Text style={styles.warningText}>
-                Hasil ini bukan diagnosis final. Konsultasi dengan dokter untuk pemeriksaan lebih lanjut.
+                Hasil ini bukan diagnosis final. Konsultasi dengan dokter untuk
+                pemeriksaan lebih lanjut.
               </Text>
             </View>
           </View>
@@ -261,9 +264,13 @@ export default function ResultsScreen() {
 
         <View style={styles.actionCard}>
           <Text style={styles.actionTitle}>Langkah Selanjutnya</Text>
-          
+
           <TouchableOpacity onPress={viewReferral} style={styles.actionButton}>
-            <Ionicons name="location-outline" size={24} color={COLORS.primary} />
+            <Ionicons
+              name="location-outline"
+              size={24}
+              color={COLORS.primary}
+            />
             <View style={styles.actionContent}>
               <Text style={styles.actionLabel}>Lihat Fasilitas Kesehatan</Text>
               <Text style={styles.actionDescription}>
@@ -287,7 +294,10 @@ export default function ResultsScreen() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity onPress={startNewScreening} style={styles.newScreeningButton}>
+        <TouchableOpacity
+          onPress={startNewScreening}
+          style={styles.newScreeningButton}
+        >
           <Ionicons name="refresh-outline" size={20} color={COLORS.white} />
           <Text style={styles.newScreeningButtonText}>Skrining Baru</Text>
         </TouchableOpacity>
@@ -309,9 +319,9 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.text,
-    textAlign: 'center',
+    textAlign: "center",
   },
   content: {
     flex: 1,
@@ -319,8 +329,8 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     fontSize: 18,
@@ -329,14 +339,14 @@ const styles = StyleSheet.create({
   },
   errorContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 32,
   },
   errorText: {
     fontSize: 18,
     color: COLORS.text,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 16,
     marginBottom: 24,
   },
@@ -349,23 +359,23 @@ const styles = StyleSheet.create({
   retryButtonText: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   chartContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 32,
-    position: 'relative',
+    position: "relative",
   },
   chartCenter: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
     transform: [{ translateX: -60 }, { translateY: -30 }],
-    alignItems: 'center',
+    alignItems: "center",
   },
   probabilityText: {
     fontSize: 32,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.text,
   },
   probabilityLabel: {
@@ -385,12 +395,12 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
   },
   classificationContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 20,
   },
   classificationBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 12,
@@ -399,21 +409,21 @@ const styles = StyleSheet.create({
   classificationText: {
     color: COLORS.white,
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   confidenceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 16,
   },
   confidenceLabel: {
     fontSize: 16,
     color: COLORS.text,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   confidenceBadge: {
-    backgroundColor: COLORS.accent + '20',
+    backgroundColor: COLORS.accent + "20",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
@@ -421,7 +431,7 @@ const styles = StyleSheet.create({
   confidenceText: {
     color: COLORS.accent,
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   guidanceContainer: {
     borderTopWidth: 1,
@@ -430,7 +440,7 @@ const styles = StyleSheet.create({
   },
   guidanceTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.text,
     marginBottom: 8,
   },
@@ -440,8 +450,8 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   warningCard: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.warning + '10',
+    flexDirection: "row",
+    backgroundColor: COLORS.warning + "10",
     padding: 16,
     borderRadius: 12,
     marginBottom: 16,
@@ -454,7 +464,7 @@ const styles = StyleSheet.create({
   },
   warningTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.warning,
     marginBottom: 4,
   },
@@ -476,13 +486,13 @@ const styles = StyleSheet.create({
   },
   actionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.text,
     marginBottom: 16,
   },
   actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
@@ -493,7 +503,7 @@ const styles = StyleSheet.create({
   },
   actionLabel: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.text,
     marginBottom: 2,
   },
@@ -507,9 +517,9 @@ const styles = StyleSheet.create({
   },
   newScreeningButton: {
     backgroundColor: COLORS.primary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 16,
     borderRadius: 12,
     gap: 8,
@@ -518,6 +528,6 @@ const styles = StyleSheet.create({
   newScreeningButtonText: {
     color: COLORS.white,
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
