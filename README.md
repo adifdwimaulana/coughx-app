@@ -1,50 +1,98 @@
-# Welcome to your Expo app 👋
+# CoughX — AI TB Screening (Mobile UI)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**CoughX** is a mobile-first user interface for **early Tuberculosis (TB) screening**. It guides users to **record cough samples**, complete a **short anamnesis**, and view an **instant risk result** (TB+ / TB–) with clear referral guidance — all localized in **Bahasa Indonesia**.
 
-## Get started
+> ⚠️ **Disclaimer**: CoughX is a screening aid for demonstration and prototyping. It is **not** a medical device or a clinical diagnosis tool. Always consult a qualified health professional.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ What’s in this repo?
 
-2. Start the app
+- A **standalone mobile UI** (no backend) generated from the product spec.
+- Screens for **Onboarding**, **Consent (T&C)**, **Cough Recording**, **Anamnesis**, **Results**, **Referral Guidance**, **History**, and **Profile**.
+- An **image set** prepared for demo and documentation (background-removed).
 
-   ```bash
-   npx expo start
-   ```
+## 🖼️ Screens (Preview)
 
-In the output, you'll find options to open the app in a
+### Onboarding
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+<p>
+  <img src="coughx_images/Onboarding 1.png" width="240" />
+  <img src="coughx_images/Onboarding 2.png" width="240" />
+  <img src="coughx_images/Onboarding 3.png" width="240" />
+</p>
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Terms & Consent
 
-## Get a fresh project
+<img src="coughx_images/TnC.png" width="280" />
 
-When you're ready, run:
+### Recording Guidance & Cough Capture
 
-```bash
-npm run reset-project
-```
+<p>
+  <img src="coughx_images/Record Guide.png" width="280" />
+  <img src="coughx_images/Record.png" width="280" />
+</p>
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Anamnesis (Short Questionnaire)
 
-## Learn more
+<img src="coughx_images/Anamnesis.png" width="280" />
 
-To learn more about developing your project with Expo, look at the following resources:
+### Profile
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+<img src="coughx_images/Profile.png" width="280" />
 
-## Join the community
+> Tip: If GitHub’s markdown doesn’t render these inline images, open them from the folder above or view the README in a markdown preview tool.
 
-Join our community of developers creating universal apps.
+---
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🧭 Core Flows
+
+1. **Onboarding → Consent**: Explain purpose, privacy, and microphone permission.
+2. **Record Cough (3x)**: Visual meter, noise/quality hints, and retry guidance.
+3. **Anamnesis**: Fast, tappable questions (fever, weight loss, TB contact, duration).
+4. **Result**: TB+ / TB– with confidence band and **clear next steps**.
+5. **Referral Guidance**: Suggested facility types and what to bring (ID, symptoms list).
+6. **History (Local)**: Last screenings for demo; delete or revisit details.
+7. **Profile**: Preferences (e.g., auto-delete recordings), legal text, version.
+
+---
+
+## 🗣️ Language & Accessibility
+
+- **Localization**: Bahasa Indonesia copy throughout the UI.
+- **Accessibility**: Large tap targets (≥44dp), high-contrast palette, voice-over labels, and icon descriptions.
+
+---
+
+## 🧪 Demo Script (2–3 minutes)
+
+1. **Open app → Onboarding → Setujui T&C**.
+2. **Record** 3 cough samples; show quality hint if environment is noisy.
+3. **Isi Anamnesis** (5–6 taps).
+4. **Lihat Hasil** (TB+ / TB–) + **Rujukan**.
+5. **Tutup** and show entry in **Riwayat**.
+6. Open **Profil** to show preferences & legal disclaimer.
+
+---
+
+## 🗺️ Roadmap Ideas (Post-hackathon)
+
+- **Result screen** enhancements (confidence explanation, shareable referral).
+- **Facility finder** (map, distance, open hours).
+- **Offline-first** UI for recording → queued upload (when backend exists).
+- **Analytics** view for health workers (once a dashboard is added).
+
+---
+
+## 📜 License & Attribution
+
+- UI and images © CoughX team. Do not reuse without permission.
+- “CoughX” is a project codename for hackathon use only.
+- Medical disclaimer applies; see “Disclaimer” above.
+
+---
+
+### Acknowledgements
+
+- Thanks to the team for UI assets and prototypes.
+- This UI was structured to align with an **Acoustic TB**-style screening engine (not included here).
